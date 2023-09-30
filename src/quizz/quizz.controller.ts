@@ -1,7 +1,8 @@
-import { Body, Get, HttpStatus, Param, Post, Put, Req, Res } from "@nestjs/common";
+import { Body, Delete, Get, HttpStatus, Param, Post, Put, Req, Res } from "@nestjs/common";
 import { Controller } from "@nestjs/common/decorators/core/controller.decorator";
-import { Response } from "express";
-import { QuestionInGameDTO } from "./question/dto/question-in-game-dto.model";
+import { Response, response } from "express";
+import { QuestionInGameDTO } from "../../../quizapp-dto/question-in-game-dto.model";
+import { Question } from "./question/question.model";
 import { Quizz } from "./quizz.model";
 import { QuizzService } from "./quizz.service";
 
@@ -12,10 +13,8 @@ export class QuizzController {
 
     @Post()
     async create(@Res() response : Response, @Body() quizz: Quizz) {
-        const newQuizz = await this.quizzService.create(quizz);
-        return response.status(HttpStatus.CREATED).json({
-            newQuizz
-        })
+        const newQuizz: Quizz = await this.quizzService.create(quizz);
+        return response.status(HttpStatus.CREATED).json(newQuizz)
     }
 
     @Get()
@@ -36,10 +35,20 @@ export class QuizzController {
 
     @Put('/:id')
     async update(@Res() response, @Param('id') id: string, @Body() quizz: Quizz) {
-        const updatedQuizz = await this.quizzService.update(id, quizz);
-        return response.status(HttpStatus.OK).json(
-            updatedQuizz
-        )
+        await this.quizzService.update(id, quizz);
+        return response.status(HttpStatus.OK)
+    }
+
+    @Delete('/:id')
+    async delete(@Res() response: Response, @Param('id') id: string) {
+        await this.quizzService.delete(id);
+        return response.status(HttpStatus.OK).send();
+    }
+
+    @Post('/:idQuizz/new-question')
+    async createQuestionToQuizz(@Res() response, @Param('idQuizz') idQuizz: string, @Body() question: Question) {
+        const idQuestion = await this.quizzService.addNewQuestion(idQuizz, question);
+        return response.status(HttpStatus.OK).json({idQuestion: idQuestion});
     }
 
     @Put('/:idQuizz/add-question/:idQuestion')

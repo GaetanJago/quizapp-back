@@ -12,7 +12,7 @@ export class QuestionController {
 
     @Post()
     async create(@Res() response, @Body() question: Question) {
-        const newQuestion = await this.questionService.create(question);
+        const newQuestion : Question = await this.questionService.create(question);
         return response.status(HttpStatus.CREATED).json(
             newQuestion
         )
@@ -20,7 +20,7 @@ export class QuestionController {
 
     @Get('')
     async findAll(@Res() response: Response) {
-        const questions = await this.questionService.findAll();
+        const questions : Question[] = await this.questionService.findAll();
         return response.status(HttpStatus.OK).json(
             questions
         )
@@ -28,7 +28,7 @@ export class QuestionController {
 
     @Get('/:id')
     async findById(@Res() response: Response, @Param('id') id: string) {
-        const question = await this.questionService.findById(id)
+        const question : Question = await this.questionService.findById(id)
         return response.status(HttpStatus.OK).json(
             question
         )
@@ -36,7 +36,7 @@ export class QuestionController {
 
     @Put('/:id')
     async update(@Res() response, @Param('id') id: string, @Body() question: Question) {
-        const updatedQuestion = await this.questionService.update(id, question);
+        const updatedQuestion : Question = await this.questionService.update(id, question);
         return response.status(HttpStatus.OK).json(
             updatedQuestion
         )

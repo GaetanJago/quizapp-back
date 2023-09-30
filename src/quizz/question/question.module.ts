@@ -8,6 +8,7 @@ import { QuestionService } from "./question.service";
 
 @Module({
     imports: [ MongooseModule.forFeature([{ name: 'Question', schema: QuestionSchema}])],
+    exports: [ QuestionService],
     controllers: [QuestionController],
     providers: [QuestionService]
 })
