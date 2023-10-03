@@ -5,6 +5,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { QuestionModule } from './quizz/question/question.module';
 import { QuizzModule } from './quizz/quizz.module';
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
 
 
 const routes : Routes = [
@@ -18,6 +20,14 @@ const routes : Routes = [
       {
         path: '/question',
         module: QuestionModule
+      },
+      {
+        path: '/auth',
+        module: AuthModule
+      },
+      {
+        path: '/user',
+        module: UserModule
       }
     ]
   }
@@ -29,7 +39,9 @@ const routes : Routes = [
     MongooseModule.forRoot('mongodb://127.0.0.1:27017/quizapp'),
     RouterModule.register(routes),
     QuizzModule,
-    QuestionModule
+    QuestionModule,
+    AuthModule,
+    UserModule
   ],
   controllers: [AppController],
   providers: [AppService],
